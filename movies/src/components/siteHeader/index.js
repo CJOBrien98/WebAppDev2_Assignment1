@@ -20,16 +20,17 @@ const SiteHeader = ({ history }) => {
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-  
+
   const navigate = useNavigate();
 
   const menuOptions = [
     { label: "Home", path: "/" },
-    { label: "Favorites", path: "/movies/favorites" },
-    { label: "Upcoming", path: "/movies/upcoming" },
-    { label: "Watch List", path: "/movies/watchlist" },
     { label: "Now Playing", path: "/movies/now_playing" },
-    { label: "Option 6", path: "/movies/upcoming" },
+    { label: "Popular", path: "/movies/popular" },
+    { label: "Upcoming", path: "/movies/upcoming" },
+    //{ label: "Favorites", path: "/movies/favorites" },
+    //{ label: "Watch List", path: "/movies/watchlist" },
+
   ];
 
   const handleMenuSelect = (pageURL) => {
@@ -39,6 +40,26 @@ const SiteHeader = ({ history }) => {
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
+
+  //    "My Lists" dropdown states & handlers (Menu starts line 125)
+  const [dropdownAnchorEl, setDropdownAnchorEl] = useState(null);
+  const dropdownOpen = Boolean(dropdownAnchorEl);
+
+  const handleDropdownClick = (event) => {
+    setDropdownAnchorEl(event.currentTarget);
+  }
+
+  const handleDropdownClose = () => {
+    setDropdownAnchorEl(null);
+  }
+
+  const handleDropdownSelect = (pageURL) => {
+    handleDropdownClose();
+    navigate(pageURL, { replace: true });
+  };
+
+
 
   return (
     <>
@@ -50,55 +71,90 @@ const SiteHeader = ({ history }) => {
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
             All you ever wanted to know about Movies!
           </Typography>
-            {isMobile ? (
-              <>
-                <IconButton
-                  aria-label="menu"
-                  aria-controls="menu-appbar"
-                  aria-haspopup="true"
-                  onClick={handleMenu}
-                  color="inherit"
-                >
-                  <MenuIcon />
-                </IconButton>
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  open={open}
-                  onClose={() => setAnchorEl(null)}
-                >
-                  {menuOptions.map((opt) => (
-                    <MenuItem
-                      key={opt.label}
-                      onClick={() => handleMenuSelect(opt.path)}
-                    >
-                      {opt.label}
-                    </MenuItem>
-                  ))}
-                </Menu>
-              </>
-            ) : (
-              <>
+          {isMobile ? (
+            <>
+              <IconButton
+                aria-label="menu"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleMenu}
+                color="inherit"
+              >
+                <MenuIcon />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={open}
+                onClose={() => setAnchorEl(null)}
+              >
                 {menuOptions.map((opt) => (
-                  <Button
+                  <MenuItem
                     key={opt.label}
-                    color="inherit"
                     onClick={() => handleMenuSelect(opt.path)}
                   >
                     {opt.label}
-                  </Button>
+                  </MenuItem>
                 ))}
-              </>
-            )}
+              </Menu>
+            </>
+          ) : (
+            <>
+              {menuOptions.map((opt) => (
+                <Button
+                  key={opt.label}
+                  color="inherit"
+                  onClick={() => handleMenuSelect(opt.path)}
+                >
+                  {opt.label}
+                </Button>
+
+              ))}
+            </>
+          )}
+          <div>
+            <Button
+              id="dropdown-button"
+              aria-controls={dropdownOpen ? 'dropdown-menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={dropdownOpen ? 'true' : undefined}
+              onClick={handleDropdownClick}
+              color="inherit"
+            >
+              My Lists
+            </Button>
+            <Menu
+              id="dropdown-menu"
+              aria-labelledby="dropdown-button"
+              anchorEl={dropdownAnchorEl}
+              open={dropdownOpen}
+              onClose={handleDropdownClose}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+            >
+              <MenuItem onClick={() => handleDropdownSelect("/movies/favorites")}>
+                Favorites
+              </MenuItem>
+              <MenuItem onClick={() => handleDropdownSelect("/movies/watchlist")}>
+                Watch List
+              </MenuItem>
+            </Menu>
+          </div>
         </Toolbar>
       </AppBar>
       <Offset />
