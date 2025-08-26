@@ -63,16 +63,16 @@ const styles = {
 const ReviewForm = ({ movie }) => {
   const context = useContext(MoviesContext);
   const [rating, setRating] = useState(3);
-  const [open, setOpen] = useState(false); 
+  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
-  
+
   const defaultValues = {
     author: "",
     review: "",
     agree: false,
     rating: "3",
   };
-  
+
   const {
     control,
     formState: { errors },

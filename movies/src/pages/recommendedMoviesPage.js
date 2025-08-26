@@ -1,15 +1,19 @@
 //import React from "react";
-import { getUpcomingMovies } from "../api/tmdb-api";
+import { getRecommended } from "../api/tmdb-api";
 import PageTemplate from '../components/templateMovieListPage';
 import { useQuery } from 'react-query';
 import Spinner from '../components/spinner';
 import AddToFavoritesIcon from '../components/cardIcons/addToFavorites';
 import AddToWatchListIcon from "../components/cardIcons/addToWatchList";
+import { useParams } from 'react-router-dom';
 import Stack from "@mui/material/Stack";
 
-const UpcomingMoviesPage = (props) => {
-
-  const { data, error, isLoading, isError } = useQuery('upcoming', getUpcomingMovies)
+const RecommendedMoviesPage = (props) => {
+  const { id } = useParams();
+  const { data, error, isLoading, isError } = useQuery(
+    ["recommended", { id: id }],
+    getRecommended
+  );
 
   if (isLoading) {
     return <Spinner />
@@ -30,7 +34,7 @@ const UpcomingMoviesPage = (props) => {
 
   return (
     <PageTemplate
-      title="Upcoming Movies"
+      title="Recommended Movies"
       movies={movies}
       action={(movie) => {
         return (
@@ -45,4 +49,4 @@ const UpcomingMoviesPage = (props) => {
     />
   );
 };
-export default UpcomingMoviesPage;
+export default RecommendedMoviesPage;

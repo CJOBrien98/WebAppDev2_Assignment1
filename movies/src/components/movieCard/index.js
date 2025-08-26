@@ -1,4 +1,4 @@
-import React , { useContext  } from "react";
+import React, { useContext } from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -16,8 +16,10 @@ import { Link } from "react-router-dom";
 import Avatar from '@mui/material/Avatar';
 import { MoviesContext } from "../../contexts/moviesContext";
 import PlaylistAddCheckCircleIcon from '@mui/icons-material/PlaylistAddCheckCircle';
+import Stack from "@mui/material/Stack";
+import AvatarGroup from "@mui/material/AvatarGroup";
 
-export default function MovieCard({movie, action}) {
+export default function MovieCard({ movie, action }) {
   const { favorites, addToFavorites } = useContext(MoviesContext);
 
   if (favorites.find((id) => id === movie.id)) {
@@ -48,16 +50,18 @@ export default function MovieCard({movie, action}) {
     <Card>
       <CardHeader
         avatar={
-          movie.favorite ? (
-            <Avatar sx={{ backgroundColor: 'red' }}>
-              <FavoriteIcon />
-            </Avatar>
-          ) :
-          movie.watchlist ? (
-            <Avatar sx={{ backgroundColor: 'green' }}>
-              <PlaylistAddCheckCircleIcon />
-            </Avatar>
-          ) : null
+          <AvatarGroup max={2}>
+            {movie.favorite && (
+              <Avatar sx={{ backgroundColor: 'red' }}>
+                <FavoriteIcon />
+              </Avatar>
+            )}
+            {movie.watchlist && (
+              <Avatar sx={{ backgroundColor: 'green' }}>
+                <PlaylistAddCheckCircleIcon />
+              </Avatar>
+            )}
+          </AvatarGroup>
         }
         title={
           <Typography variant="h5" component="p">
@@ -75,13 +79,13 @@ export default function MovieCard({movie, action}) {
       />
       <CardContent>
         <Grid container>
-          <Grid size={{xs: 6}}>
+          <Grid size={{ xs: 6 }}>
             <Typography variant="h6" component="p">
               <CalendarIcon fontSize="small" />
               {movie.release_date}
             </Typography>
           </Grid>
-          <Grid size={{xs: 6}}>
+          <Grid size={{ xs: 6 }}>
             <Typography variant="h6" component="p">
               <StarRateIcon fontSize="small" />
               {"  "} {movie.vote_average}{" "}
@@ -90,15 +94,22 @@ export default function MovieCard({movie, action}) {
         </Grid>
       </CardContent>
       <CardActions disableSpacing>
-      
+
         {action(movie)}
-      
-        <Link to={`/movies/${movie.id}`}>
-          <Button variant="outlined" size="medium" color="primary">
-            More Info ...
-          </Button>
-        </Link>
-        
+
+        <Stack direction="column" spacing={1}>
+          <Link to={`/movies/${movie.id}`}>
+            <Button variant="outlined" size="medium" color="primary">
+              More Info ...
+            </Button>
+          </Link>
+          <Link to={`/movies/${movie.id}/recommendations`}>
+            <Button variant="outlined" size="medium" color="primary">
+              Recommendations...
+            </Button>
+          </Link>
+        </Stack>
+
       </CardActions>
     </Card>
   );

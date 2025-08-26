@@ -5,12 +5,11 @@ import { useQueries } from "react-query";
 import { getMovie } from "../api/tmdb-api";
 import Spinner from '../components/spinner'
 import RemoveFromWatchList from "../components/cardIcons/removeFromWatchList";
-import WriteReview from "../components/cardIcons/writeReview";
+
 
 const WatchListMoviesPage = () => {
-  const {watchlist: movieIds } = useContext(MoviesContext);
+  const { watchlist: movieIds } = useContext(MoviesContext);
 
-  // Create an array of queries and run in parallel.
   const watchListMovieQueries = useQueries(
     movieIds.map((movieId) => {
       return {
@@ -19,7 +18,7 @@ const WatchListMoviesPage = () => {
       };
     })
   );
-  // Check if any of the parallel queries is still loading.
+  
   const isLoading = watchListMovieQueries.find((m) => m.isLoading === true);
 
   if (isLoading) {
@@ -33,7 +32,7 @@ const WatchListMoviesPage = () => {
 
   const toDo = () => true;
 
-   return (
+  return (
     <PageTemplate
       title="Movie Watch List"
       movies={movies}
@@ -41,7 +40,6 @@ const WatchListMoviesPage = () => {
         return (
           <>
             <RemoveFromWatchList movie={movie} />
-            <WriteReview movie={movie} />
           </>
         );
       }}

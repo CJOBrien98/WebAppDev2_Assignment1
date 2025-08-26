@@ -3,11 +3,13 @@ import { getPopularMovies } from "../api/tmdb-api";
 import PageTemplate from '../components/templateMovieListPage';
 import { useQuery } from 'react-query';
 import Spinner from '../components/spinner';
-import PlaylistAddIcon from '../components/cardIcons/addToWatchList';
+import AddToFavoritesIcon from '../components/cardIcons/addToFavorites';
+import AddToWatchListIcon from "../components/cardIcons/addToWatchList";
+import Stack from "@mui/material/Stack";
 
 const PopularMoviesPage = (props) => {
 
-  const {  data, error, isLoading, isError }  = useQuery('popular', getPopularMovies)
+  const { data, error, isLoading, isError } = useQuery('popular', getPopularMovies)
 
   if (isLoading) {
     return <Spinner />
@@ -15,22 +17,32 @@ const PopularMoviesPage = (props) => {
 
   if (isError) {
     return <h1>{error.message}</h1>
-  }  
+  }
   const movies = data.results;
 
-  // Redundant, but necessary to avoid app crashing.
+  const favorites = movies.filter(m => m.favorite)
+  localStorage.setItem('favorites', JSON.stringify(favorites))
+  const addToFavorites = (movieId) => true
+
   const watchlist = movies.filter(m => m.watchlist)
   localStorage.setItem('watchlist', JSON.stringify(watchlist))
   const addToWatchList = (movieId) => true
 
   return (
-      <PageTemplate
-        title="Popular Movies"
-        movies={movies}
-        action={(movie) => {
-          return <PlaylistAddIcon movie={movie} />
-        }}
-      />
+    <PageTemplate
+      title="Popular Movies"
+      movies={movies}
+      action={(movie) => {
+        return (
+          <>
+            <Stack direction="column" spacing={1}>
+              <AddToFavoritesIcon movie={movie} />
+              <AddToWatchListIcon movie={movie} />
+            </Stack>
+          </>
+        )
+      }}
+    />
   );
 };
 export default PopularMoviesPage;

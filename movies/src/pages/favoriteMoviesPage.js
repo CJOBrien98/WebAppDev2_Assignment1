@@ -6,11 +6,11 @@ import { getMovie } from "../api/tmdb-api";
 import Spinner from '../components/spinner'
 import RemoveFromFavorites from "../components/cardIcons/removeFromFavorites";
 import WriteReview from "../components/cardIcons/writeReview";
+import Stack from "@mui/material/Stack";
 
 const FavoriteMoviesPage = () => {
-  const {favorites: movieIds } = useContext(MoviesContext);
+  const { favorites: movieIds } = useContext(MoviesContext);
 
-  // Create an array of queries and run in parallel.
   const favoriteMovieQueries = useQueries(
     movieIds.map((movieId) => {
       return {
@@ -19,7 +19,6 @@ const FavoriteMoviesPage = () => {
       };
     })
   );
-  // Check if any of the parallel queries is still loading.
   const isLoading = favoriteMovieQueries.find((m) => m.isLoading === true);
 
   if (isLoading) {
@@ -33,15 +32,17 @@ const FavoriteMoviesPage = () => {
 
   const toDo = () => true;
 
-   return (
+  return (
     <PageTemplate
       title="Favorite Movies"
       movies={movies}
       action={(movie) => {
         return (
           <>
-            <RemoveFromFavorites movie={movie} />
-            <WriteReview movie={movie} />
+            <Stack direction="column" spacing={1}>
+              <RemoveFromFavorites movie={movie} />
+              <WriteReview movie={movie} />
+            </Stack>
           </>
         );
       }}

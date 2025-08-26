@@ -13,11 +13,11 @@ import { useQuery } from "react-query";
 import Spinner from '../spinner'
 
 export default function MovieReviews({ movie }) {
-  const { data , error, isLoading, isError } = useQuery(
+  const { data, error, isLoading, isError } = useQuery(
     ["reviews", { id: movie.id }],
     getMovieReviews
   );
-  
+
   if (isLoading) {
     return <Spinner />;
   }
@@ -25,12 +25,12 @@ export default function MovieReviews({ movie }) {
   if (isError) {
     return <h1>{error.message}</h1>;
   }
-  
+
   const reviews = data.results;
 
   return (
     <TableContainer component={Paper}>
-      <Table sx={{minWidth: 550}} aria-label="reviews table">
+      <Table sx={{ minWidth: 550 }} aria-label="reviews table">
         <TableHead>
           <TableRow>
             <TableCell >Author</TableCell>
@@ -46,11 +46,11 @@ export default function MovieReviews({ movie }) {
               </TableCell>
               <TableCell >{excerpt(r.content)}</TableCell>
               <TableCell >
-              <Link
+                <Link
                   to={`/reviews/${r.id}`}
                   state={{
-                      review: r,
-                      movie: movie,
+                    review: r,
+                    movie: movie,
                   }}
                 >
                   Full Review

@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
+import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
 import { MoviesContext } from "../../contexts/moviesContext";
 
 const RemoveFromWatchListIcon = ({ movie }) => {
@@ -15,7 +15,7 @@ const RemoveFromWatchListIcon = ({ movie }) => {
       aria-label="remove from watch list"
       onClick={handleRemoveFromWatchList}
     >
-      <DeleteIcon color="primary" fontSize="large" />
+      <PlaylistRemoveIcon color="primary" fontSize="large" />
     </IconButton>
   );
 };

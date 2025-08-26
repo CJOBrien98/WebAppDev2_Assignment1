@@ -14,12 +14,12 @@ import { getGenres } from "../../api/tmdb-api";
 import { useQuery } from "react-query";
 import Spinner from '../spinner'
 
-const formControl = 
-  {
-    margin: 1,
-    minWidth: "90%",
-    backgroundColor: "rgb(255, 255, 255)"
-  };
+const formControl =
+{
+  margin: 1,
+  minWidth: "90%",
+  backgroundColor: "rgb(255, 255, 255)"
+};
 
 export default function FilterMoviesCard(props) {
 
@@ -33,7 +33,7 @@ export default function FilterMoviesCard(props) {
     return <h1>{error.message}</h1>;
   }
   const genres = data.genres;
-  if (genres[0].name !== "All"){
+  if (genres[0].name !== "All") {
     genres.unshift({ id: "0", name: "All" });
   }
 
@@ -49,12 +49,12 @@ export default function FilterMoviesCard(props) {
   const handleGenreChange = (e) => {
     handleChange(e, "genre", e.target.value);
   };
-  
+
   return (
-    <Card 
+    <Card
       sx={{
         backgroundColor: "rgb(204, 204, 0)"
-      }} 
+      }}
       variant="outlined">
       <CardContent>
         <Typography variant="h5" component="h1">
@@ -62,7 +62,7 @@ export default function FilterMoviesCard(props) {
           Filter the movies.
         </Typography>
         <TextField
-          sx={{...formControl}}
+          sx={{ ...formControl }}
           id="filled-search"
           label="Search field"
           type="search"
@@ -70,7 +70,7 @@ export default function FilterMoviesCard(props) {
           value={props.titleFilter}
           onChange={handleTextChange}
         />
-        <FormControl sx={{...formControl}}>
+        <FormControl sx={{ ...formControl }}>
           <InputLabel id="genre-label">Genre</InputLabel>
           <Select
             labelId="genre-label"
